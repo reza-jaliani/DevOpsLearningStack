@@ -1,8 +1,37 @@
 ---
 # tasks file for logging
+
+- name: Install Python dependencies for Docker
+  apt:
+    name:
+      - python3-pip
+      - python3-setuptools
+      - python3-venv
+    state: present
+    update_cache: true
+
+- name: Install docker SDK for Python
+  pip:
+    name:
+      - docker
+      - docker-compose
+    state: present
+
 - name: Create logging directory
   file:
     path: "{{ logging_compose_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Create Promtail config directory
+  file:
+    path: "{{ promtail_config_path }}"
+    state: directory
+    mode: '0755'
+
+- name: Create Loki data directory
+  file:
+    path: "{{ loki_data_path }}"
     state: directory
     mode: '0755'
 
