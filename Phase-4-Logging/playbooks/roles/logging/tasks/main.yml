@@ -1,0 +1,65 @@
+---
+# Ensure conflicting packages are removed
+- name: Remove old Docker packages if present
+  become: yes
+  apt:
+    name:
+      - docker
+      - docker-engine
+      - docker.io
+      - containerd
+      - runc
+    state: absent
+    purge: yes
+
+# Install dependencies
+- name: Ensure required packages are installed
+  become: yes
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+    update_cache: yes
+
+# Add Docker’s official GPG key
+- name: Add Docker GPG key
+  become: yes
+  ansible.builtin.shell: |
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    chmod a+r /etc/apt/keyrings/docker.gpg
+  args:
+    creates: /etc/apt/keyrings/docker.gpg
+
+# Add Docker repository
+- name: Add Docker repository
+  become: yes
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    state: present
+
+# Install Docker and containerd
+- name: Install Docker packages
+  become: yes
+  apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present
+    update_cache: yes
+
+# Start and enable Docker
+- name: Ensure Docker is running
+  become: yes
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
+
