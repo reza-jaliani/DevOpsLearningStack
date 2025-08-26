@@ -1,0 +1,27 @@
+- name: Ensure Loki data directory exists
+  file:
+    path: "{{ loki_data_path }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0755"
+
+- name: Ensure Promtail config directory exists
+  file:
+    path: "{{ promtail_config_path }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0755"
+
+- name: Copy Docker Compose file for Logging
+  template:
+    src: docker-compose.logging.yml.j2
+    dest: "{{ promtail_config_path }}/docker-compose.logging.yml"
+
+- name: Bring up logging stack
+  shell: docker compose -f /home/reza/logging/docker-compose.logging.yml up -d
+  args:
+    chdir: /home/reza/logging
+  become: true
+

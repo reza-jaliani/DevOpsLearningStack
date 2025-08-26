@@ -1,0 +1,3 @@
+[logging]
+target ansible_host=192.168.133.129 ansible_user=reza
+

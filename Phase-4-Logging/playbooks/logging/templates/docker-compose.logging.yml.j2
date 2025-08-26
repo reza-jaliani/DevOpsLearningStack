@@ -7,24 +7,26 @@ networks:
 services:
   loki:
     image: grafana/loki:latest
-    container_name: loki
+    container_name: {{ loki_container_name }}
     ports:
-      - "3100:3100"
+      - "{{ loki_port }}:3100"
     volumes:
       - {{ loki_data_path }}:/loki
     command: -config.file=/etc/loki/local-config.yaml
+    user: "10001:10001"
     networks:
       - {{ logging_network_name }}
 
   promtail:
     image: grafana/promtail:latest
-    container_name: promtail
+    container_name: {{ promtail_container_name }}
     depends_on:
-      - loki
+      - {{ loki_container_name }}
     volumes:
       - /var/log:/var/log
       - {{ promtail_config_path }}:/etc/promtail
     command: -config.file=/etc/promtail/config.yml
+    user: "10001:10001"
     networks:
       - {{ logging_network_name }}
 
