@@ -11,10 +11,11 @@ services:
     ports:
       - "{{ loki_port }}:3100"
     volumes:
-      - loki_data:/loki
+      - {{ loki_data_dir }}:/loki
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       - {{ logging_network_name }}
+    restart: always
 
   promtail:
     image: grafana/promtail:latest
@@ -22,11 +23,14 @@ services:
     depends_on:
       - {{ loki_container_name }}
     volumes:
-      - /var/log:/var/log
-      - {{ promtail_config_path }}:/etc/promtail
-    command: -config.file=/etc/promtail/config.yml
+      - /var/log:/var/log:ro
+      - "{{ promtail_config_path }}:/etc/promtail/promtail-config.yml:ro"
+      - "{{ docker_log_path }}:/var/lib/docker/containers:ro"
+    command: -config.file=/etc/promtail/promtail-config.yml
+    restart: always
     networks:
       - {{ logging_network_name }}
 
 volumes:
   loki_data:
+

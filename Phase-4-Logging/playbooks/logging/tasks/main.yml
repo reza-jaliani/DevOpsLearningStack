@@ -6,30 +6,41 @@
     group: "{{ ansible_user_gid }}"
     mode: "0755"
 
-- name: Ensure Loki data directory exists
+- name: Create Loki data directory
   file:
-    path: "{{ loki_data_path }}"
+    path: "{{ loki_data_dir }}"
     state: directory
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-    mode: "0755"
+    owner: root
+    group: root
+    mode: '0755'
 
-- name: Ensure Promtail config directory exists
+- name: Create Promtail config directory
   file:
-    path: "{{ promtail_config_path }}"
+    path: "{{ promtail_config_path | dirname }}"
     state: directory
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_gid }}"
-    mode: "0755"
+    owner: root
+    group: root
+    mode: '0755'
 
-- name: Copy Docker Compose file for Logging
+- name: Deploy Promtail configuration
+  template:
+    src: promtail-config.yml.j2
+    dest: "{{ promtail_config_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Deploy Loki and Promtail docker-compose file
   template:
     src: docker-compose.logging.yml.j2
     dest: "{{ logging_root_path }}/docker-compose.logging.yml"
+    owner: root
+    group: root
+    mode: '0644'
 
-- name: Bring up logging stack
+- name: Bring up logging stack using docker-compose
   shell: docker compose -f docker-compose.logging.yml up -d
   args:
-    chdir: "{{ logging_root_path }}"
-  become: true
+    chdir: /opt/logging
+
 
