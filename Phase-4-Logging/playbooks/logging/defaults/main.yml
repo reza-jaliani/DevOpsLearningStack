@@ -1,10 +1,12 @@
 ---
+logging_root_path: /home/reza/logging
+
 logging_network_name: logging_net
 
 loki_container_name: loki
 loki_port: 3100
-loki_data_path: /home/reza/logging/loki
+loki_data_path: "{{ logging_root_path }}/loki"
 
 promtail_container_name: promtail
-promtail_config_path: /home/reza/logging/promtail
+promtail_config_path: "{{ logging_root_path }}/promtail"
 

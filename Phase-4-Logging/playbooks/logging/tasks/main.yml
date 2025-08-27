@@ -1,3 +1,11 @@
+- name: Ensure logging root directory exists
+  file:
+    path: "{{ logging_root_path }}"
+    state: directory
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_gid }}"
+    mode: "0755"
+
 - name: Ensure Loki data directory exists
   file:
     path: "{{ loki_data_path }}"
@@ -17,11 +25,11 @@
 - name: Copy Docker Compose file for Logging
   template:
     src: docker-compose.logging.yml.j2
-    dest: "{{ promtail_config_path }}/docker-compose.logging.yml"
+    dest: "{{ logging_root_path }}/docker-compose.logging.yml"
 
 - name: Bring up logging stack
-  shell: docker compose -f /home/reza/logging/docker-compose.logging.yml up -d
+  shell: docker compose -f docker-compose.logging.yml up -d
   args:
-    chdir: /home/reza/logging
+    chdir: "{{ logging_root_path }}"
   become: true
 
