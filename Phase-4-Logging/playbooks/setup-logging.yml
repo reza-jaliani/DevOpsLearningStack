@@ -4,4 +4,4 @@
 
   roles:
     - logging
-
+    - grafana

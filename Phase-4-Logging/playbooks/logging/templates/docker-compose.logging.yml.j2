@@ -11,7 +11,7 @@ services:
     ports:
       - "{{ loki_port }}:3100"
     volumes:
-      - {{ loki_data_dir }}:/loki
+      - /opt/logging/loki:/loki
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       - {{ logging_network_name }}

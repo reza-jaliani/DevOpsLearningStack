@@ -1,0 +1,18 @@
+---
+- name: Create Grafana directory
+  file:
+    path: "{{ grafana_compose_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Deploy Grafana docker-compose.yml
+  template:
+    src: docker-compose.grafana.yml.j2
+    dest: "{{ grafana_compose_dir }}/docker-compose.yml"
+    mode: '0644'
+
+- name: Run Grafana with Docker Compose
+  command: docker compose up -d
+  args:
+    chdir: "{{ grafana_compose_dir }}"
+
