@@ -1,0 +1,51 @@
+- name: Ensure PLPG root directory exists
+  file:
+    path: "{{ plpg_root_path }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create subdirectories for data and configs
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - "{{ loki_data_dir }}"
+    - "{{ grafana_data_dir }}"
+    - "{{ prometheus_data_dir }}"
+    - "{{ promtail_config_path | dirname }}"
+    - "{{ prometheus_config_path | dirname }}"
+
+- name: Deploy Promtail configuration
+  template:
+    src: promtail-config.yml.j2
+    dest: "{{ promtail_config_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Deploy Prometheus configuration
+  template:
+    src: prometheus.yml.j2
+    dest: "{{ prometheus_config_path }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Deploy PLPG docker-compose file
+  template:
+    src: docker-compose.plpg.yml.j2
+    dest: "{{ plpg_root_path }}/docker-compose.yml"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Bring up PLPG stack
+  command: docker compose up -d
+  args:
+    chdir: "{{ plpg_root_path }}"
+

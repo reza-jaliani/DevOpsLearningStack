@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ['{{ prometheus_container_name }}:9090']
+
+  - job_name: loki
+    static_configs:
+      - targets: ['{{ loki_container_name }}:3100']
+
+  - job_name: docker
+    static_configs:
+      - targets: ['{{ ansible_host }}:9323']
+

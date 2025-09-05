@@ -1,0 +1,6 @@
+- name: Setup Centralized PLPG Stack
+  hosts: all
+  become: true
+
+  roles:
+    - plpg

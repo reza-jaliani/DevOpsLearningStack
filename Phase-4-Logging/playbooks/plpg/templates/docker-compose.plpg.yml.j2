@@ -1,0 +1,59 @@
+version: '3.8'
+
+networks:
+  {{ plpg_network_name }}:
+    driver: bridge
+
+services:
+  loki:
+    image: grafana/loki:latest
+    container_name: {{ loki_container_name }}
+    ports:
+      - "{{ loki_port }}:3100"
+    volumes:
+      - {{ loki_data_dir }}:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - {{ plpg_network_name }}
+    restart: always
+
+  promtail:
+    image: grafana/promtail:latest
+    container_name: {{ promtail_container_name }}
+    depends_on:
+      - {{ loki_container_name }}
+    volumes:
+      - /var/log:/var/log
+      - "{{ promtail_config_path }}:/etc/promtail/config.yml:ro"
+      - "{{ docker_log_path }}:/var/lib/docker/containers:ro"
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - {{ plpg_network_name }}
+    restart: always
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: {{ prometheus_container_name }}
+    ports:
+      - "{{ prometheus_port }}:9090"
+    volumes:
+      - "{{ prometheus_config_path }}:/etc/prometheus/prometheus.yml:ro"
+      - "{{ prometheus_data_dir }}:/prometheus"
+    networks:
+      - {{ plpg_network_name }}
+    restart: always
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: {{ grafana_container_name }}
+    ports:
+      - "{{ grafana_port }}:3000"
+    volumes:
+      - "{{ grafana_data_dir }}:/var/lib/grafana"
+    depends_on:
+      - {{ loki_container_name }}
+      - {{ prometheus_container_name }}
+    networks:
+      - {{ plpg_network_name }}
+    restart: always
+

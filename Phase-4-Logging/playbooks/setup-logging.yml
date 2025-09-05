@@ -1,7 +1,0 @@
-- name: Setup Centralized logging
-  hosts: all
-  become: true
-
-  roles:
-    - logging
-    - grafana

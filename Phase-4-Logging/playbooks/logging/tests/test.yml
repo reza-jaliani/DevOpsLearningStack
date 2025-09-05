@@ -1,6 +1,0 @@
----
-- hosts: logging
-  become: true
-  remote_user: root
-  roles:
-    - logging
