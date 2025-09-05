@@ -26,6 +26,7 @@ services:
       - /var/log:/var/log
       - "{{ promtail_config_path }}:/etc/promtail/config.yml:ro"
       - "{{ docker_log_path }}:/var/lib/docker/containers:ro"
+      - {{ plpg_root_path }}/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
     command: -config.file=/etc/promtail/config.yml
     networks:
       - {{ plpg_network_name }}

@@ -73,3 +73,19 @@
     group: 472
     mode: "0755"
 
+- name: Ensure Promtail config directory exists
+  file:
+    path: "{{ plpg_root_path }}/promtail"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Deploy Promtail configuration
+  template:
+    src: promtail-config.yml.j2
+    dest: "{{ plpg_root_path }}/promtail/promtail-config.yml"
+    owner: root
+    group: root
+    mode: '0644'
+
