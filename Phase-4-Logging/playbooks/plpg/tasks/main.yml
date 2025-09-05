@@ -49,3 +49,27 @@
   args:
     chdir: "{{ plpg_root_path }}"
 
+- name: Create Grafana provisioning directory
+  file:
+    path: "{{ plpg_root_path }}/grafana-provisioning/datasources"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Deploy Grafana datasource config
+  template:
+    src: grafana-datasources.yml.j2
+    dest: "{{ plpg_root_path }}/grafana-provisioning/datasources/datasources.yml"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure grafana data directory exists with correct permissions
+  file:
+    path: /opt/plpg/grafana-data
+    state: directory
+    owner: 472
+    group: 472
+    mode: "0755"
+

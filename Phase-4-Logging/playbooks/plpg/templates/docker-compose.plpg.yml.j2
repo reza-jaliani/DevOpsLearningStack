@@ -50,6 +50,7 @@ services:
       - "{{ grafana_port }}:3000"
     volumes:
       - "{{ grafana_data_dir }}:/var/lib/grafana"
+      - "{{ plpg_root_path }}/grafana-provisioning:/etc/grafana/provisioning"
     depends_on:
       - {{ loki_container_name }}
       - {{ prometheus_container_name }}
