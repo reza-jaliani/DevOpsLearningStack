@@ -4,20 +4,16 @@ This project demonstrates how to deploy a **centralized monitoring and logging s
 
 ---
 
-## 📖 Introduction
+## Introduction
 The PLPG stack combines metrics and logs into a unified system:
 
 - **Prometheus**: Collects and stores time-series metrics from targets like Docker and other exporters.
 - **Loki**: A log aggregation system, optimized for storing and querying logs efficiently.
 - **Promtail**: An agent that ships container logs to Loki.
 - **Grafana**: A visualization platform that integrates both Prometheus metrics and Loki logs into powerful dashboards.
-
-This project is part of my DevOps learning journey. You can find the full code in the GitHub repository:  
-👉 [DockerizedZabbixPrj - Phase 4 Logging](https://github.com/reza-jaliani/DockerizedZabbixPrj/tree/phase-4-logging)
-
 ---
 
-## 📂 Project Structure
+## Project Structure
 ```
 Phase-4-Logging/
 │
@@ -38,7 +34,7 @@ Phase-4-Logging/
 
 ---
 
-## 🚀 Deployment Steps
+## Deployment Steps
 
 ### 1. Requirements
 - Docker & Docker Compose installed on target machine  
@@ -64,7 +60,7 @@ This will:
 
 ---
 
-## 🔧 Prometheus Configuration
+## Prometheus Configuration
 Default scrape jobs include:
 - `prometheus:9090`
 - `loki:3100`
@@ -76,7 +72,7 @@ Prometheus config file path (inside container):
 
 ---
 
-## 📊 Grafana Dashboards
+## Grafana Dashboards
 Grafana is exposed at **http://<server-ip>:3000**  
 Default credentials:
 ```
@@ -91,7 +87,7 @@ You can import dashboards from [Grafana.com](https://grafana.com/grafana/dashboa
 
 ---
 
-## ✅ Verification
+## Verification
 
 ### Check Prometheus Targets
 Visit: `http://<server-ip>:9090/targets`  
@@ -111,13 +107,8 @@ Promtail should report that it is watching container log files.
 
 ---
 
-## 🤝 Contribution
+## Contribution
 This project is part of my DevOps learning journey. Feedback and suggestions are welcome!
 
 GitHub Repository:  
-👉 [DockerizedZabbixPrj - Phase 4 Logging](https://github.com/reza-jaliani/DockerizedZabbixPrj/tree/phase-4-logging)
-
----
-
-## 📌 License
-MIT License
+[DockerizedZabbixPrj - Phase 4 Logging](https://github.com/reza-jaliani/DockerizedZabbixPrj/tree/phase-4-logging)
