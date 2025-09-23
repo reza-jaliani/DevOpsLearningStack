@@ -18,3 +18,39 @@ This project is mainly designed to:
 ---
 
 Next steps: extend this stack with more advanced Terraform features (remote state, modules, cloud providers).
+
+---
+
+# Terraform Installation Guide
+
+To get started with this phase, we first need to install Terraform on our system. Below is a straightforward step-by-step process to install Terraform on Ubuntu/Debian-based systems.
+
+1. Update system packages
+
+        sudo apt-get update && sudo apt-get upgrade -y
+
+2. Install required dependencies
+
+        sudo apt-get install -y wget curl unzip gnupg software-properties-common
+
+3. Add HashiCorp GPG key
+
+        wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+4. Add HashiCorp official repository
+
+        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+        https://apt.releases.hashicorp.com $(lsb_release -cs) main" \
+        | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+5. Install Terraform
+
+        sudo apt-get update
+        sudo apt-get install -y terraform
+
+6. Verify installation
+
+        terraform -version
+
+
+If everything is set up correctly, you should see the installed version of Terraform.
