@@ -34,6 +34,7 @@ This repository documents my personal journey of migrating Zabbix to a modern, D
 **Goal:** Full infrastructure automation  
 - Using **Terraform** to provision VMs or cloud resources  
 - Integration of **Terraform + Ansible** for end-to-end provisioning
+- Implementing **EFK Stack** using **Terraform + Ansible**
 
 ###  Phase 5 and Beyond (Future Plans)
 - **Alerting**: Integrate with Slack or Telegram  
