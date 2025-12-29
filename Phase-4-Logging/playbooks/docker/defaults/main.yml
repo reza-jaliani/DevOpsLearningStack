@@ -1,0 +1,10 @@
+---
+docker_package_state: present
+docker_service_state: started
+docker_service_enabled: true
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-compose-plugin
+
