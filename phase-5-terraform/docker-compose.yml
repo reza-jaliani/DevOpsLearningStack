@@ -34,7 +34,22 @@ services:
       options:
         fluentd-address: localhost:24224
         tag: nginx.access
+    volumes:
+      - nginx-logs:/var/log/nginx
+
+  fluent-bit:
+    image: fluent/fluent-bit:2.2
+    container_name: fluent-bit
+    depends_on:
+      - fluentd
+      - nginx
+    volumes:
+      - nginx-logs:/var/log/nginx:ro
+      - ./fluent-bit/fluent-bit.conf:/fluent-bit/etc/fluent-bit.conf
+    command: ["fluent-bit", "-c", "/fluent-bit/etc/fluent-bit.conf"]
+
 
 
 volumes:
   esdata:
+  nginx-logs:
