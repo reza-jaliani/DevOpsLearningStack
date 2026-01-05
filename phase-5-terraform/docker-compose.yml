@@ -21,6 +21,7 @@ services:
       - "24224:24224"
     volumes:
       - ./fluentd/fluent.conf:/etc/fluentd/fluent.conf
+      - fluentd-buffer:/var/log/fluentd
 
   nginx:
     image: nginx:1.25
@@ -53,3 +54,4 @@ services:
 volumes:
   esdata:
   nginx-logs:
+  fluentd-buffer:
